@@ -1,0 +1,14 @@
+{
+  "total": 100,
+  "success": 100,
+  "failed": 0,
+  "success_rate": "100.0%",
+  "elapsed_time_seconds": 199.07,
+  "average_time_seconds": 1.99,
+  "generated_at": "2025-10-22T17:54:53.879669",
+  "config": {
+    "max_workers": 3,
+    "agent_id": "1-d1d5bf70-cb5e-4701-94fa-bf274a7925e7",
+    "user_message": "请生成一个新的 ReAct 任务示例"
+  }
+}
