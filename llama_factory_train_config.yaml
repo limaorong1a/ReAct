@@ -1,0 +1,56 @@
+# LLaMA-Factory 训练配置文件
+# 适用于 Qwen2.5-7B 模型 LoRA 微调
+
+### 模型配置
+model_name_or_path: Qwen/Qwen2.5-7B-Instruct  # 或本地路径
+# model_name_or_path: /path/to/your/qwen2.5-7b-instruct
+
+### 数据配置
+dataset: react_training  # 需要在 data/dataset_info.json 中定义
+template: qwen  # 使用 Qwen 模板
+cutoff_len: 2048  # 最大序列长度（ReAct 示例较长）
+
+### LoRA 配置
+finetuning_type: lora
+lora_target: all  # 对所有线性层应用 LoRA
+lora_rank: 16  # LoRA 秩（可选 8/16/32/64）
+lora_alpha: 32  # LoRA alpha（通常是 rank 的 2 倍）
+lora_dropout: 0.05
+
+### 训练参数
+num_train_epochs: 3  # 训练轮数
+per_device_train_batch_size: 2  # 每设备批次大小
+gradient_accumulation_steps: 8  # 梯度累积（有效 batch_size = 2*8 = 16）
+learning_rate: 5.0e-5  # 学习率
+lr_scheduler_type: cosine  # 学习率调度器
+warmup_ratio: 0.1  # 预热比例
+
+### 优化器配置
+optim: adamw_torch  # 优化器
+# optim: paged_adamw_8bit  # 如果显存不足，使用 8-bit 优化器
+
+### 输出配置
+output_dir: ./output/qwen2.5-7b-react  # 输出目录
+logging_steps: 10
+save_steps: 100
+eval_steps: 100
+
+### 评估配置
+evaluation_strategy: steps
+val_size: 0.1  # 验证集比例
+per_device_eval_batch_size: 2
+
+### 其他配置
+fp16: true  # 使用 FP16 混合精度（RTX 30/40 系列）
+# bf16: true  # 如果 GPU 支持 BF16（A100/H100），推荐使用
+gradient_checkpointing: true  # 梯度检查点（节省显存）
+ddp_find_unused_parameters: false
+
+### 推理配置
+predict_with_generate: true
+max_new_tokens: 1024  # 生成最大长度
+
+### 日志配置
+report_to: tensorboard  # 或 wandb
+logging_dir: ./logs
+
